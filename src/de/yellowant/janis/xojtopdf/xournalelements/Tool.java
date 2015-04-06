@@ -1,7 +1,7 @@
 package de.yellowant.janis.xojtopdf.xournalelements;
 
 public enum Tool {
-	PEN(1), HIGHLIGHTER(0.35f);
+	PEN(1), HIGHLIGHTER(0.5f);
 
 	private float opacity;
 

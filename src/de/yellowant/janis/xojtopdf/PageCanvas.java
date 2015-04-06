@@ -1,5 +1,6 @@
 package de.yellowant.janis.xojtopdf;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -80,7 +81,10 @@ public class PageCanvas {
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			Line2D.Double l = new Line2D.Double(line.x1, line.y1, line.x2,
 					line.y2);
-			g2d.setStroke(new BasicStroke((float) line.width));
+			g2d.setStroke(new BasicStroke((float) line.width,
+					BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC,
+					line.color.getAlpha() / 255f));
 			g2d.draw(l);
 			// rect = new Rectangle2D.Double(line.x1, line.y1,
 			// Math.sqrt((line.y2 - line.y1) * (line.y2 - line.y1)
