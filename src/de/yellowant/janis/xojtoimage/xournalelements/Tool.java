@@ -1,7 +1,7 @@
 package de.yellowant.janis.xojtoimage.xournalelements;
 
 public enum Tool {
-	PEN(1), HIGHLIGHTER(0.5f);
+	PEN(1), HIGHLIGHTER(0.5f), PAGELINER(.9f);
 
 	private float opacity;
 

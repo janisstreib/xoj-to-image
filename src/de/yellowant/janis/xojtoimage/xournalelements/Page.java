@@ -1,5 +1,6 @@
 package de.yellowant.janis.xojtoimage.xournalelements;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ public class Page {
 	private double width, height;
 	private LinkedList<Layer> layers = new LinkedList<Layer>();
 	private Color backroundColor;
+	private String style;
 
 	public Page(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
@@ -29,6 +31,7 @@ public class Page {
 			} else if (name.equals("background")) {
 				backroundColor = Color.getColorByName(parser.getAttributeValue(
 						null, "color"));
+				style = parser.getAttributeValue(null, "style");
 				XMLParseUtils.skip(parser);
 			} else {
 				XMLParseUtils.skip(parser);
@@ -48,9 +51,25 @@ public class Page {
 		return layers;
 	}
 
-	public void paintBackround(Graphics2D g, Tool t, int width, int height) {
+	public void paintBackround(Graphics2D g, Tool t, int width, int height,
+			float factor) {
 		g.setBackground(backroundColor.getAwtColor(t));
 		g.clearRect(0, 0, height, width);
+		if ("lined".equals(style)) {
+			java.awt.Stroke oldStroke = g.getStroke();
+			g.setStroke(new BasicStroke(1.1f));
+			g.setColor(Color.MAGENTA.getAwtColor(Tool.PAGELINER));
+			int round = Math.round(72 * factor);
+			g.drawLine(round, 0, round, width);
+			g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
+			int y = Math.round(80 * factor);
+			for (int i = 0; i < height / 10; i++) {
+				g.drawLine(0, y, height, y);
+				y += Math.round(24f * factor);
+			}
+			g.setStroke(oldStroke);
+		}
+
 	}
 
 }

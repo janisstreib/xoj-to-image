@@ -102,7 +102,7 @@ public class PageCanvas implements Renderer {
 				width,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
-		p.paintBackround(d, Tool.PEN, width, height);
+		p.paintBackround(d, Tool.PEN, width, height, factor);
 		paintXOJ(d, p, texts.get(pageIndex), lines.get(pageIndex));
 		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
