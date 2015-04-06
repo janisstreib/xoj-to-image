@@ -1,8 +1,8 @@
 package de.yellowant.janis.xojtopdf;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -75,6 +75,7 @@ public class PageCanvas {
 		for (Line line : lines) {
 			g.setColor(line.color);
 			Graphics2D g2d = (Graphics2D) g.create();
+			Composite old = g2d.getComposite();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
@@ -83,9 +84,10 @@ public class PageCanvas {
 					line.y2);
 			g2d.setStroke(new BasicStroke((float) line.width,
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC,
-					line.color.getAlpha() / 255f));
+			// g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR,
+			// line.color.getAlpha() / 255f));
 			g2d.draw(l);
+			g2d.setComposite(old);
 			// rect = new Rectangle2D.Double(line.x1, line.y1,
 			// Math.sqrt((line.y2 - line.y1) * (line.y2 - line.y1)
 			// + (line.x2 - line.x1) * (line.x2 - line.x1)),
@@ -94,13 +96,16 @@ public class PageCanvas {
 		}
 		for (Text text : texts) {
 			g.setColor(text.getColor().getAwtColor(Tool.PEN));
-			g.setFont(text.getFont());
+			g.setFont(text.getFont().deriveFont(
+					text.getFont().getSize() * factor));
+			System.out.println(g.getFont());
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			float y = (float) text.getY() * factor;
+			// Magic number here.
+			float y = (float) (text.getY() - 4) * factor;
 			for (String line : text.getText().split("\n")) {
 				g2d.drawString(line, (float) text.getX() * factor, y += g
 						.getFontMetrics().getHeight());
@@ -112,6 +117,8 @@ public class PageCanvas {
 		BufferedImage buf = new BufferedImage(getWidth(), getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
+		d.setBackground(Color.WHITE);
+		d.clearRect(0, 0, width, height);
 		paintXOJ(d);
 		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
