@@ -14,25 +14,48 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
+import de.yellowant.janis.xojtopdf.xournalelements.Layer;
+import de.yellowant.janis.xojtopdf.xournalelements.Page;
+import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
 import de.yellowant.janis.xojtopdf.xournalelements.Text;
 import de.yellowant.janis.xojtopdf.xournalelements.Tool;
 
 public class PageCanvas {
 	private int width, height;
 	private float factor;
+	private Page p;
 
-	public PageCanvas(int width, int height, float factor) {
-		this.height = (int) (height * factor);
-		this.width = (int) (width * factor);
+	public PageCanvas(Page p, float factor) {
+		this.height = (int) Math.round(p.getHeight() * factor);
+		this.width = (int) Math.round(p.getWidth() * factor);
 		this.factor = factor;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
+		this.p = p;
+		for (Layer l : p.getLayers()) {
+			texts.addAll(l.getTexts());
+			for (Stroke stroke : l.getStrokes()) {
+				Color awtColor = stroke.getColor()
+						.getAwtColor(stroke.getTool());
+				double[] coords = stroke.getCoords();
+				double[] widths = stroke.getWidths();
+				for (int i = 0; i < coords.length - 2; i += 2) {
+					double width;
+					if (widths.length == 0) {
+						width = 1;
+					} else {
+						if (i > widths.length - 1) {
+							width = widths[widths.length - 1];
+						} else {
+							width = widths[i];
+							if (i != 0) {
+								width = widths[i - 1];
+							}
+						}
+					}
+					addLine(coords[i], coords[i + 1], coords[i + 2],
+							coords[i + 3], width, awtColor);
+				}
+			}
+		}
 	}
 
 	private static class Line {
@@ -43,7 +66,7 @@ public class PageCanvas {
 		final Color color;
 		final double width;
 
-		public Line(double x1, double y1, double x2, double y2, double width,
+		private Line(double x1, double y1, double x2, double y2, double width,
 				Color color) {
 			this.x1 = x1;
 			this.y1 = y1;
@@ -54,21 +77,13 @@ public class PageCanvas {
 		}
 	}
 
-	private final LinkedList<Line> lines = new LinkedList<Line>();
+	private LinkedList<Line> lines = new LinkedList<Line>();
 	private LinkedList<Text> texts = new LinkedList<Text>();
 
-	public void addLine(double x1, double x2, double x3, double x4, double width) {
-		addLine(x1, x2, x3, x4, width, Color.black);
-	}
-
-	public void addLine(double x1, double x2, double x3, double x4,
+	private void addLine(double x1, double x2, double x3, double x4,
 			double width, Color color) {
 		lines.add(new Line(x1 * factor, x2 * factor, x3 * factor, x4 * factor,
-				width * factor, color));
-	}
-
-	public void clearLines() {
-		lines.clear();
+				Math.max(width, 1) * factor, color));
 	}
 
 	public void paintXOJ(Graphics g) {
@@ -98,7 +113,6 @@ public class PageCanvas {
 			g.setColor(text.getColor().getAwtColor(Tool.PEN));
 			g.setFont(text.getFont().deriveFont(
 					text.getFont().getSize() * factor));
-			System.out.println(g.getFont());
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
@@ -114,17 +128,12 @@ public class PageCanvas {
 	}
 
 	public void exportImage(String imageName, String format) throws IOException {
-		BufferedImage buf = new BufferedImage(getWidth(), getHeight(),
+		BufferedImage buf = new BufferedImage(height, width,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
-		d.setBackground(Color.WHITE);
-		d.clearRect(0, 0, width, height);
+		p.paintBackround(d, Tool.PEN, width, height);
 		paintXOJ(d);
 		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
-	}
-
-	public void setTexts(LinkedList<Text> texts) {
-		this.texts = texts;
 	}
 }

@@ -1,5 +1,6 @@
 package de.yellowant.janis.xojtopdf.xournalelements;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -11,6 +12,7 @@ import de.yellowant.janis.xojtopdf.XMLParseUtils;
 public class Page {
 	private double width, height;
 	private LinkedList<Layer> layers = new LinkedList<Layer>();
+	private Color backroundColor;
 
 	public Page(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
@@ -24,6 +26,10 @@ public class Page {
 			String name = parser.getName();
 			if (name.equals("layer")) {
 				layers.add(new Layer(parser));
+			} else if (name.equals("background")) {
+				backroundColor = Color.getColorByName(parser.getAttributeValue(
+						null, "color"));
+				XMLParseUtils.skip(parser);
 			} else {
 				XMLParseUtils.skip(parser);
 			}
@@ -40,6 +46,11 @@ public class Page {
 
 	public LinkedList<Layer> getLayers() {
 		return layers;
+	}
+
+	public void paintBackround(Graphics2D g, Tool t, int width, int height) {
+		g.setBackground(backroundColor.getAwtColor(t));
+		g.clearRect(0, 0, height, width);
 	}
 
 }

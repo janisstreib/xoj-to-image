@@ -1,6 +1,5 @@
 package de.yellowant.janis.xojtopdf;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,9 +11,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import de.yellowant.janis.xojtopdf.xournalelements.Layer;
 import de.yellowant.janis.xojtopdf.xournalelements.Page;
-import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
 import de.yellowant.janis.xojtopdf.xournalelements.Xournal;
 
 public class XOJToImage {
@@ -28,34 +25,7 @@ public class XOJToImage {
 		Xournal xour = xoj.getXournal();
 		int pageNumber = 1;
 		for (Page p : xour.getPages()) {
-			final PageCanvas comp = new PageCanvas((int) (p.getHeight()),
-					(int) (p.getWidth()), FACTOR);
-			for (Layer l : p.getLayers()) {
-				comp.setTexts(l.getTexts());
-				for (Stroke stroke : l.getStrokes()) {
-					Color awtColor = stroke.getColor().getAwtColor(
-							stroke.getTool());
-					double[] coords = stroke.getCoords();
-					double[] widths = stroke.getWidths();
-					for (int i = 0; i < coords.length - 2; i += 2) {
-						double width;
-						if (widths.length == 0) {
-							width = 1;
-						} else {
-							if (i > widths.length - 1) {
-								width = widths[widths.length - 1];
-							} else {
-								width = widths[i];
-								if (i != 0) {
-									width = widths[i - 1];
-								}
-							}
-						}
-						comp.addLine(coords[i], coords[i + 1], coords[i + 2],
-								coords[i + 3], Math.max(width, 1), awtColor);
-					}
-				}
-			}
+			PageCanvas comp = new PageCanvas(p, FACTOR);
 			comp.exportImage("test_" + pageNumber++, "png");
 		}
 	}
@@ -63,13 +33,6 @@ public class XOJToImage {
 	public XOJToImage(File input) throws FileNotFoundException, IOException,
 			XmlPullParserException {
 		this.input = new GZIPInputStream(new FileInputStream(input));
-		// byte[] buf = new byte[512];
-		// FileOutputStream out = new FileOutputStream(new File("test.xml"));
-		// int read;
-		// while ((read = this.input.read(buf)) != -1) {
-		// out.write(buf, 0, read);
-		// }
-		// out.close();
 		XmlPullParser parser = XmlPullParserFactory.newInstance()
 				.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
