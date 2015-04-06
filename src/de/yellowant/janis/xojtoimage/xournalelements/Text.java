@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtopdf.xournalelements;
+package de.yellowant.janis.xojtoimage.xournalelements;
 
 import java.awt.Font;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import de.yellowant.janis.xojtopdf.XMLParseUtils;
+import de.yellowant.janis.xojtoimage.XMLParseUtils;
 
 public class Text {
 	private Font font;

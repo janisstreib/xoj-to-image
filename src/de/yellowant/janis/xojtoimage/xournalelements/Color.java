@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtopdf.xournalelements;
+package de.yellowant.janis.xojtoimage.xournalelements;
 
 public enum Color {
 	BLACK(java.awt.Color.BLACK), YELLOW(java.awt.Color.YELLOW), ORANGE(

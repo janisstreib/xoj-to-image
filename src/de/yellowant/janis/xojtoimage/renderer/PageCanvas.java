@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtopdf;
+package de.yellowant.janis.xojtoimage.renderer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,11 +14,11 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
-import de.yellowant.janis.xojtopdf.xournalelements.Layer;
-import de.yellowant.janis.xojtopdf.xournalelements.Page;
-import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
-import de.yellowant.janis.xojtopdf.xournalelements.Text;
-import de.yellowant.janis.xojtopdf.xournalelements.Tool;
+import de.yellowant.janis.xojtoimage.xournalelements.Layer;
+import de.yellowant.janis.xojtoimage.xournalelements.Page;
+import de.yellowant.janis.xojtoimage.xournalelements.Stroke;
+import de.yellowant.janis.xojtoimage.xournalelements.Text;
+import de.yellowant.janis.xojtoimage.xournalelements.Tool;
 
 public class PageCanvas implements Renderer {
 	private float factor;

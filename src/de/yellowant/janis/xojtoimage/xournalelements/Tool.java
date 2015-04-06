@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtopdf.xournalelements;
+package de.yellowant.janis.xojtoimage.xournalelements;
 
 public enum Tool {
 	PEN(1), HIGHLIGHTER(0.5f);
