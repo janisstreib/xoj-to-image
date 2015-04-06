@@ -89,5 +89,6 @@ public class PageCanvas {
 		Graphics2D d = buf.createGraphics();
 		paintXOJ(d);
 		ImageIO.write(buf, "png", new File(imageName));
+		d.dispose();
 	}
 }
