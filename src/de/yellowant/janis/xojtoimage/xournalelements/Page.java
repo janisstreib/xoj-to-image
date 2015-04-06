@@ -68,6 +68,17 @@ public class Page {
 				y += Math.round(24f * factor);
 			}
 			g.setStroke(oldStroke);
+		} else if ("graph".equals(style)) {
+			java.awt.Stroke oldStroke = g.getStroke();
+			g.setStroke(new BasicStroke(1.1f));
+			g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
+			int y = Math.round(14 * factor);
+			for (int i = 0; i < height / 20; i++) {
+				g.drawLine(0, y, height, y);
+				g.drawLine(y, 0, y, width);
+				y += Math.round(14 * factor);
+			}
+			g.setStroke(oldStroke);
 		}
 
 	}
