@@ -13,12 +13,17 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
+import de.yellowant.janis.xojtopdf.xournalelements.Text;
+import de.yellowant.janis.xojtopdf.xournalelements.Tool;
+
 public class PageCanvas {
 	private int width, height;
+	private float factor;
 
-	public PageCanvas(int width, int height) {
-		this.height = height;
-		this.width = width;
+	public PageCanvas(int width, int height, float factor) {
+		this.height = (int) (height * factor);
+		this.width = (int) (width * factor);
+		this.factor = factor;
 	}
 
 	public int getHeight() {
@@ -49,6 +54,7 @@ public class PageCanvas {
 	}
 
 	private final LinkedList<Line> lines = new LinkedList<Line>();
+	private LinkedList<Text> texts = new LinkedList<Text>();
 
 	public void addLine(double x1, double x2, double x3, double x4, double width) {
 		addLine(x1, x2, x3, x4, width, Color.black);
@@ -56,7 +62,8 @@ public class PageCanvas {
 
 	public void addLine(double x1, double x2, double x3, double x4,
 			double width, Color color) {
-		lines.add(new Line(x1, x2, x3, x4, width, color));
+		lines.add(new Line(x1 * factor, x2 * factor, x3 * factor, x4 * factor,
+				width * factor, color));
 	}
 
 	public void clearLines() {
@@ -66,13 +73,13 @@ public class PageCanvas {
 	public void paintXOJ(Graphics g) {
 		for (Line line : lines) {
 			g.setColor(line.color);
-			Line2D.Double l = new Line2D.Double(line.x1, line.y1, line.x2,
-					line.y2);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			Line2D.Double l = new Line2D.Double(line.x1, line.y1, line.x2,
+					line.y2);
 			g2d.setStroke(new BasicStroke((float) line.width));
 			g2d.draw(l);
 			// rect = new Rectangle2D.Double(line.x1, line.y1,
@@ -80,6 +87,20 @@ public class PageCanvas {
 			// + (line.x2 - line.x1) * (line.x2 - line.x1)),
 			// line.width);
 			// g2d.fill(rect);
+		}
+		for (Text text : texts) {
+			g.setColor(text.getColor().getAwtColor(Tool.PEN));
+			g.setFont(text.getFont());
+			Graphics2D g2d = (Graphics2D) g.create();
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			float y = (float) text.getY() * factor;
+			for (String line : text.getText().split("\n")) {
+				g2d.drawString(line, (float) text.getX() * factor, y += g
+						.getFontMetrics().getHeight());
+			}
 		}
 	}
 
@@ -90,5 +111,9 @@ public class PageCanvas {
 		paintXOJ(d);
 		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
+	}
+
+	public void setTexts(LinkedList<Text> texts) {
+		this.texts = texts;
 	}
 }

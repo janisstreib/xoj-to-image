@@ -15,8 +15,8 @@ public class Page {
 	public Page(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		parser.require(XmlPullParser.START_TAG, null, "page");
-		width = Double.parseDouble(parser.getAttributeValue(null, "width"));
-		height = Double.parseDouble(parser.getAttributeValue(null, "height"));
+		height = Double.parseDouble(parser.getAttributeValue(null, "width"));
+		width = Double.parseDouble(parser.getAttributeValue(null, "height"));
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.getEventType() != XmlPullParser.START_TAG) {
 				continue;

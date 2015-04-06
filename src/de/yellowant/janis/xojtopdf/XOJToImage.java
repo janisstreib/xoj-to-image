@@ -28,10 +28,10 @@ public class XOJToImage {
 		Xournal xour = xoj.getXournal();
 		int pageNumber = 1;
 		for (Page p : xour.getPages()) {
-			final PageCanvas comp = new PageCanvas(
-					(int) (p.getHeight() * FACTOR),
-					(int) (p.getWidth() * FACTOR));
+			final PageCanvas comp = new PageCanvas((int) (p.getHeight()),
+					(int) (p.getWidth()), FACTOR);
 			for (Layer l : p.getLayers()) {
+				comp.setTexts(l.getTexts());
 				for (Stroke stroke : l.getStrokes()) {
 					Color awtColor = stroke.getColor().getAwtColor(
 							stroke.getTool());
@@ -51,10 +51,8 @@ public class XOJToImage {
 								}
 							}
 						}
-						comp.addLine(coords[i] * FACTOR,
-								coords[i + 1] * FACTOR, coords[i + 2] * FACTOR,
-								coords[i + 3] * FACTOR, Math.max(width, 1)
-										* FACTOR, awtColor);
+						comp.addLine(coords[i], coords[i + 1], coords[i + 2],
+								coords[i + 3], Math.max(width, 1), awtColor);
 					}
 				}
 			}
