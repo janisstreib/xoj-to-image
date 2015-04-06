@@ -6,4 +6,5 @@
 *.xoj
 *.jpeg
 *.gif
+/out/
 
