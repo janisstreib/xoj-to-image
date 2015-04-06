@@ -15,7 +15,7 @@ public class Stroke {
 
 	public Stroke(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
-		tool = Tool.PEN;
+		tool = Tool.getToolByName(parser.getAttributeValue(null, "tool"));
 		color = Color.getColorByName(parser.getAttributeValue(null, "color"));
 		widths = parseBunch(parser.getAttributeValue(null, "width"));
 		coords = parseBunch(XMLParseUtils.readText(parser));

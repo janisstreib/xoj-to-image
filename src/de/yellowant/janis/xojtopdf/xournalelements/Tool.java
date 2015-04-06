@@ -1,6 +1,27 @@
 package de.yellowant.janis.xojtopdf.xournalelements;
 
 public enum Tool {
-	PEN
+	PEN(1), HIGHLIGHTER(0.35f);
+
+	private float opacity;
+
+	Tool(float opacity) {
+		this.opacity = opacity;
+	}
+
+	public int getAlpha() {
+		return Math.round((255 / 100f) * (opacity * 100f));
+	}
+
+	public static Tool getToolByName(String name) {
+		switch (name.trim().toLowerCase()) {
+		case "pen":
+			return PEN;
+		case "highlighter":
+			return HIGHLIGHTER;
+		default:
+			return PEN;
+		}
+	}
 
 }

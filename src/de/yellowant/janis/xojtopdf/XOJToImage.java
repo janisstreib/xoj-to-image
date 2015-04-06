@@ -33,7 +33,8 @@ public class XOJToImage {
 					(int) (p.getWidth() * FACTOR));
 			for (Layer l : p.getLayers()) {
 				for (Stroke stroke : l.getStrokes()) {
-					Color awtColor = stroke.getColor().getAwtColor();
+					Color awtColor = stroke.getColor().getAwtColor(
+							stroke.getTool());
 					double[] coords = stroke.getCoords();
 					double[] widths = stroke.getWidths();
 					for (int i = 0; i < coords.length - 2; i += 2) {

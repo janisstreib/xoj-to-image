@@ -10,8 +10,9 @@ public enum Color {
 		this.awtColor = awtColor;
 	}
 
-	public java.awt.Color getAwtColor() {
-		return awtColor;
+	public java.awt.Color getAwtColor(Tool tool) {
+		return new java.awt.Color(awtColor.getRed(), awtColor.getGreen(),
+				awtColor.getBlue(), tool.getAlpha());
 	}
 
 	public static Color getColorByName(String name) {
