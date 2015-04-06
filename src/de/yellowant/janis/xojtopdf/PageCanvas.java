@@ -20,42 +20,12 @@ import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
 import de.yellowant.janis.xojtopdf.xournalelements.Text;
 import de.yellowant.janis.xojtopdf.xournalelements.Tool;
 
-public class PageCanvas {
-	private int width, height;
+public class PageCanvas implements Renderer {
 	private float factor;
-	private Page p;
+	private LinkedList<Page> pages;
 
-	public PageCanvas(Page p, float factor) {
-		this.height = (int) Math.round(p.getHeight() * factor);
-		this.width = (int) Math.round(p.getWidth() * factor);
+	public PageCanvas(float factor) {
 		this.factor = factor;
-		this.p = p;
-		for (Layer l : p.getLayers()) {
-			texts.addAll(l.getTexts());
-			for (Stroke stroke : l.getStrokes()) {
-				Color awtColor = stroke.getColor()
-						.getAwtColor(stroke.getTool());
-				double[] coords = stroke.getCoords();
-				double[] widths = stroke.getWidths();
-				for (int i = 0; i < coords.length - 2; i += 2) {
-					double width;
-					if (widths.length == 0) {
-						width = 1;
-					} else {
-						if (i > widths.length - 1) {
-							width = widths[widths.length - 1];
-						} else {
-							width = widths[i];
-							if (i != 0) {
-								width = widths[i - 1];
-							}
-						}
-					}
-					addLine(coords[i], coords[i + 1], coords[i + 2],
-							coords[i + 3], width, awtColor);
-				}
-			}
-		}
 	}
 
 	private static class Line {
@@ -77,17 +47,12 @@ public class PageCanvas {
 		}
 	}
 
-	private LinkedList<Line> lines = new LinkedList<Line>();
-	private LinkedList<Text> texts = new LinkedList<Text>();
+	private LinkedList<LinkedList<Line>> lines = new LinkedList<LinkedList<Line>>();
+	private LinkedList<LinkedList<Text>> texts = new LinkedList<LinkedList<Text>>();
 
-	private void addLine(double x1, double x2, double x3, double x4,
-			double width, Color color) {
-		lines.add(new Line(x1 * factor, x2 * factor, x3 * factor, x4 * factor,
-				Math.max(width, 1) * factor, color));
-	}
-
-	public void paintXOJ(Graphics g) {
-		for (Line line : lines) {
+	public void paintXOJ(Graphics g, Page p, LinkedList<Text> ptexts,
+			LinkedList<Line> plines) {
+		for (Line line : plines) {
 			g.setColor(line.color);
 			Graphics2D g2d = (Graphics2D) g.create();
 			Composite old = g2d.getComposite();
@@ -109,7 +74,7 @@ public class PageCanvas {
 			// line.width);
 			// g2d.fill(rect);
 		}
-		for (Text text : texts) {
+		for (Text text : ptexts) {
 			g.setColor(text.getColor().getAwtColor(Tool.PEN));
 			g.setFont(text.getFont().deriveFont(
 					text.getFont().getSize() * factor));
@@ -127,13 +92,58 @@ public class PageCanvas {
 		}
 	}
 
-	public void exportImage(String imageName, String format) throws IOException {
-		BufferedImage buf = new BufferedImage(height, width,
+	@Override
+	public void export(String imageName, String format, int pageIndex)
+			throws IOException {
+		Page p = pages.get(pageIndex);
+		int width = (int) Math.round(p.getWidth() * factor);
+		int height = (int) (Math.round(p.getHeight() * factor));
+		BufferedImage buf = new BufferedImage(height,
+				width,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
 		p.paintBackround(d, Tool.PEN, width, height);
-		paintXOJ(d);
+		paintXOJ(d, p, texts.get(pageIndex), lines.get(pageIndex));
 		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
+	}
+
+	@Override
+	public void setPages(LinkedList<Page> pages) {
+		this.pages = pages;
+		for (Page p : pages) {
+			LinkedList<Text> pageTexts = new LinkedList<Text>();
+			LinkedList<Line> pageLines = new LinkedList<PageCanvas.Line>();
+			for (Layer l : p.getLayers()) {
+				pageTexts.addAll(l.getTexts());
+				for (Stroke stroke : l.getStrokes()) {
+					Color awtColor = stroke.getColor().getAwtColor(
+							stroke.getTool());
+					double[] coords = stroke.getCoords();
+					double[] widths = stroke.getWidths();
+					for (int i = 0; i < coords.length - 2; i += 2) {
+						double width;
+						if (widths.length == 0) {
+							width = 1;
+						} else {
+							if (i > widths.length - 1) {
+								width = widths[widths.length - 1];
+							} else {
+								width = widths[i];
+								if (i != 0) {
+									width = widths[i - 1];
+								}
+							}
+						}
+						pageLines.add(new Line(coords[i] * factor,
+								coords[i + 1] * factor, coords[i + 2] * factor,
+								coords[i + 3] * factor, width * factor,
+								awtColor));
+					}
+				}
+			}
+			lines.add(pageLines);
+			texts.add(pageTexts);
+		}
 	}
 }
