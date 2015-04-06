@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtopdf;
+package de.yellowant.janis.xojtopdf.xournalelements;
 
 import static de.yellowant.janis.xojtopdf.XMLParseUtils.skip;
 

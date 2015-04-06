@@ -11,6 +11,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import de.yellowant.janis.xojtopdf.xournalelements.Layer;
+import de.yellowant.janis.xojtopdf.xournalelements.Page;
+import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
+import de.yellowant.janis.xojtopdf.xournalelements.Xournal;
+
 public class XOJToPDF {
 	private GZIPInputStream input;
 	private Xournal xournal;

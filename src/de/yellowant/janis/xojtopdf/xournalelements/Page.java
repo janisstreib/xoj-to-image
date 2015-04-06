@@ -1,10 +1,12 @@
-package de.yellowant.janis.xojtopdf;
+package de.yellowant.janis.xojtopdf.xournalelements;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import de.yellowant.janis.xojtopdf.XMLParseUtils;
 
 public class Page {
 	private double width, height;
