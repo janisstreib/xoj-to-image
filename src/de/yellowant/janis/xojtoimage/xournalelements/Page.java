@@ -61,12 +61,7 @@ public class Page {
 			g.setColor(Color.MAGENTA.getAwtColor(Tool.PAGELINER));
 			int round = Math.round(72 * factor);
 			g.drawLine(round, 0, round, width);
-			g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
-			int y = Math.round(80 * factor);
-			for (int i = 0; i < height / 10; i++) {
-				g.drawLine(0, y, height, y);
-				y += Math.round(24f * factor);
-			}
+			ruled(g, height, factor);
 			g.setStroke(oldStroke);
 		} else if ("graph".equals(style)) {
 			java.awt.Stroke oldStroke = g.getStroke();
@@ -79,8 +74,22 @@ public class Page {
 				y += Math.round(14 * factor);
 			}
 			g.setStroke(oldStroke);
+		} else if ("ruled".equals(style)) {
+			ruled(g, height, factor);
 		}
 
+	}
+
+	private void ruled(Graphics2D g, int height, float factor) {
+		java.awt.Stroke oldStroke = g.getStroke();
+		g.setStroke(new BasicStroke(1.1f));
+		g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
+		int y = Math.round(80 * factor);
+		for (int i = 0; i < height / 10; i++) {
+			g.drawLine(0, y, height, y);
+			y += Math.round(24f * factor);
+		}
+		g.setStroke(oldStroke);
 	}
 
 }
