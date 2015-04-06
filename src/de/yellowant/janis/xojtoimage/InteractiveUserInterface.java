@@ -12,6 +12,8 @@ public class InteractiveUserInterface {
 			XOJToImage xoj = new XOJToImage(new File(args[0]), new PageCanvas(
 					Float.parseFloat(args[2])));
 			xoj.exportAll(args[3], args[1]);
+			System.out.println("Done. Processed "
+					+ xoj.getXournal().getPages().size() + " pages.");
 		} catch (Exception e) {
 			System.err.println("Error, please check your input! ("
 					+ e.getMessage() + ")");
