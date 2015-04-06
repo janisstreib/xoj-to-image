@@ -1,5 +1,6 @@
 package de.yellowant.janis.xojtopdf;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ public class XOJToImage {
 					(int) (p.getWidth() * FACTOR));
 			for (Layer l : p.getLayers()) {
 				for (Stroke stroke : l.getStrokes()) {
+					Color awtColor = stroke.getColor().getAwtColor();
 					double[] coords = stroke.getCoords();
 					double[] widths = stroke.getWidths();
 					for (int i = 0; i < coords.length - 2; i += 2) {
@@ -51,7 +53,7 @@ public class XOJToImage {
 						comp.addLine(coords[i] * FACTOR,
 								coords[i + 1] * FACTOR, coords[i + 2] * FACTOR,
 								coords[i + 3] * FACTOR, Math.max(width, 1)
-										* FACTOR);
+										* FACTOR, awtColor);
 					}
 				}
 			}

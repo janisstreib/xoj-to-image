@@ -11,10 +11,12 @@ public class Stroke {
 	private double[] coords;
 	private double[] widths;
 	private Tool tool;
+	private Color color;
 
 	public Stroke(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
 		tool = Tool.PEN;
+		color = Color.getColorByName(parser.getAttributeValue(null, "color"));
 		widths = parseBunch(parser.getAttributeValue(null, "width"));
 		coords = parseBunch(XMLParseUtils.readText(parser));
 	}
@@ -41,4 +43,7 @@ public class Stroke {
 		return tool;
 	}
 
+	public Color getColor() {
+		return color;
+	}
 }
