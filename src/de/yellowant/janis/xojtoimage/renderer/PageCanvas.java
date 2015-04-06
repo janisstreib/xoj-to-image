@@ -98,8 +98,7 @@ public class PageCanvas implements Renderer {
 		Page p = pages.get(pageIndex);
 		int width = (int) Math.round(p.getWidth() * factor);
 		int height = (int) (Math.round(p.getHeight() * factor));
-		BufferedImage buf = new BufferedImage(height,
-				width,
+		BufferedImage buf = new BufferedImage(height, width,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
 		p.paintBackround(d, Tool.PEN, width, height, factor);
@@ -137,8 +136,8 @@ public class PageCanvas implements Renderer {
 						}
 						pageLines.add(new Line(coords[i] * factor,
 								coords[i + 1] * factor, coords[i + 2] * factor,
-								coords[i + 3] * factor, width * factor,
-								awtColor));
+								coords[i + 3] * factor, Math.max(width, 1)
+										* factor, awtColor));
 					}
 				}
 			}
