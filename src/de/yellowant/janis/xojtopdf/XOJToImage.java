@@ -16,14 +16,14 @@ import de.yellowant.janis.xojtopdf.xournalelements.Page;
 import de.yellowant.janis.xojtopdf.xournalelements.Stroke;
 import de.yellowant.janis.xojtopdf.xournalelements.Xournal;
 
-public class XOJToPDF {
+public class XOJToImage {
 	private GZIPInputStream input;
 	private Xournal xournal;
 	private static final float FACTOR = 2;
 
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException, XmlPullParserException {
-		XOJToPDF xoj = new XOJToPDF(new File("test.xoj"));
+		XOJToImage xoj = new XOJToImage(new File("test.xoj"));
 		Xournal xour = xoj.getXournal();
 		int pageNumber = 1;
 		for (Page p : xour.getPages()) {
@@ -59,7 +59,7 @@ public class XOJToPDF {
 		}
 	}
 
-	public XOJToPDF(File input) throws FileNotFoundException, IOException,
+	public XOJToImage(File input) throws FileNotFoundException, IOException,
 			XmlPullParserException {
 		this.input = new GZIPInputStream(new FileInputStream(input));
 		// byte[] buf = new byte[512];
