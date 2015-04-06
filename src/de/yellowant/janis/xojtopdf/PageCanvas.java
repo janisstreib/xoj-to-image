@@ -83,12 +83,12 @@ public class PageCanvas {
 		}
 	}
 
-	public void exportImage(String imageName) throws IOException {
+	public void exportImage(String imageName, String format) throws IOException {
 		BufferedImage buf = new BufferedImage(getWidth(), getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D d = buf.createGraphics();
 		paintXOJ(d);
-		ImageIO.write(buf, "png", new File(imageName));
+		ImageIO.write(buf, format, new File(imageName + "." + format));
 		d.dispose();
 	}
 }

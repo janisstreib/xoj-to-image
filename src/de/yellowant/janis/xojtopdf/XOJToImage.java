@@ -55,7 +55,7 @@ public class XOJToImage {
 					}
 				}
 			}
-			comp.exportImage("test_" + pageNumber++ + ".png");
+			comp.exportImage("test_" + pageNumber++, "png");
 		}
 	}
 
