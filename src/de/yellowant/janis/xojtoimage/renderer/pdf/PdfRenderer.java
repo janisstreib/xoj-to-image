@@ -39,11 +39,11 @@ public class PdfRenderer {
         pageDict.dict.put(new PdfName("MediaBox"), mediaBoxArray);
         pageDict.dict.put(new PdfName("Contents"), new PdfIndirectReference(4, 0));
         doc.objects.add(new PdfIndirectObject(pageDict, 3, 0));
-
         String contents = "BT\n" +
                 "/F1 24 Tf\n" +
                 "250 700 Td (Hello, World!) Tj\n" +
-                "ET";
+                "ET\n" +
+                "0 10 m 100 200 l h S";
         PdfStream contentsStream = new PdfStream(contents);
         doc.objects.add(new PdfIndirectObject(contentsStream, 4, 0));
 
