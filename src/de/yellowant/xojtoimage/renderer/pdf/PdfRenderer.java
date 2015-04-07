@@ -23,14 +23,18 @@ public class PdfRenderer implements Renderer{
     public void export(String name, String format, int pageIndex) throws IOException {
         doc = new PdfDocument();
         for (Page xojPage : xojPages) {
-            PdfPage pdfPage = doc.addPage();
+            double pageWidth = xojPage.getHeight(); // Switched (switch back some time?)
+            double pageHeight = xojPage.getWidth();
+            PdfPage pdfPage = doc.addPage(pageWidth, pageHeight);
             for (Layer layer : xojPage.getLayers()) {
                 for (Stroke stroke : layer.getStrokes()) {
+                    double[] xCoords = getEven(stroke.getCoords());
+                    double[] yCoords = reverseCoordinates(getOdd(stroke.getCoords()), pageHeight);
                     if (stroke.getWidths().length == 1) {
                         pdfPage.setStrokeWidth(stroke.getWidths()[0]);
-                        pdfPage.drawStroke(getEven(stroke.getCoords()), getOdd(stroke.getCoords()));
+                        pdfPage.drawStroke(xCoords, yCoords);
                     } else {
-                        pdfPage.drawStrokeVaryingWidth(getEven(stroke.getCoords()), getOdd(stroke.getCoords()), stroke.getWidths());
+                        pdfPage.drawStrokeVaryingWidth(xCoords, yCoords, stroke.getWidths());
                     }
                 }
             }
@@ -38,6 +42,14 @@ public class PdfRenderer implements Renderer{
 
         rendered = doc.render();
         writeToFile(name);
+    }
+
+    private double[] reverseCoordinates(double[] coordinates, double newOrigin) {
+        double[] result = new double[coordinates.length];
+        for (int i = 0; i < coordinates.length; i++) {
+            result[i] = newOrigin - coordinates[i];
+        }
+        return result;
     }
 
     private double[] getEven(double[] array) {

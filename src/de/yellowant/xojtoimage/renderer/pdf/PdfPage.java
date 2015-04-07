@@ -8,7 +8,7 @@ public class PdfPage extends PdfObject{
     PdfIndirectObject contents;
     private final PdfStream contentsStream;
 
-    public PdfPage(PdfDocument document) {
+    public PdfPage(PdfDocument document, double width, double height) {
         PdfDictionary pageDict = new PdfDictionary();
         pageDict.dict.put(new PdfName("Type"), new PdfName("Page"));
         pageDict.dict.put(new PdfName("Parent"), new PdfIndirectReference(document.pagesObject));
@@ -20,8 +20,8 @@ public class PdfPage extends PdfObject{
         PdfArray mediaBoxArray = new PdfArray();
         mediaBoxArray.elements.add(new PdfInteger(0));
         mediaBoxArray.elements.add(new PdfInteger(0));
-        mediaBoxArray.elements.add(new PdfInteger(612));
-        mediaBoxArray.elements.add(new PdfInteger(792));
+        mediaBoxArray.elements.add(new PdfReal(width));
+        mediaBoxArray.elements.add(new PdfReal(height));
         pageDict.dict.put(new PdfName("MediaBox"), mediaBoxArray);
         page = document.constructIndirectObject(pageDict);
 

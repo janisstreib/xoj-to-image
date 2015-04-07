@@ -68,8 +68,8 @@ public class PdfDocument {
         return new PdfIndirectObject(object, objectCounter, 0);
     }
 
-    public PdfPage addPage() {
-        PdfPage page = new PdfPage(this);
+    public PdfPage addPage(double width, double height) {
+        PdfPage page = new PdfPage(this,width, height);
         pages.add(page);
         pagesArray.elements.add(new PdfIndirectReference(page.page));
         pageCount.value = pagesArray.elements.size();
