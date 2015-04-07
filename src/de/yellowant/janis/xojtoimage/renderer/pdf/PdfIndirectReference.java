@@ -12,6 +12,11 @@ public class PdfIndirectReference extends PdfObject {
         this.generation = generation;
     }
 
+    public PdfIndirectReference(PdfIndirectObject referenceTo) {
+        this.number = referenceTo.number;
+        this.generation = referenceTo.generation;
+    }
+
     @Override
     public String render() {
         return number + " " + generation + " R";
