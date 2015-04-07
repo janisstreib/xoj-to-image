@@ -19,7 +19,7 @@ public class PdfRenderer {
 
         PdfPage pdfPage = doc.addPage();
         pdfPage.drawLine(10, 20, 30, 40);
-        pdfPage.drawStroke(new double[]{10, 20, 40, 80}, new double[]{10, 20, 30, 40});
+        pdfPage.drawStrokeVaryingWidth(new double[]{10, 20, 40, 80}, new double[]{10, 20, 30, 40}, new double[]{1, 2, 3});
     }
 
     public void render() {

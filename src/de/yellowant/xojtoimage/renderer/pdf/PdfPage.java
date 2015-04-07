@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage.renderer.pdf;
+package de.yellowant.xojtoimage.renderer.pdf;
 
 /**
  * @author Anton Schirg
@@ -41,10 +41,28 @@ public class PdfPage extends PdfObject{
         if (x.length < 2)
             throw new IllegalArgumentException("stroke has to have at least two points");
         contentsStream.content.append(x[0]).append(" ").append(y[0]).append(" m");
-        for (int i = 0; i < x.length; i++) {
+        for (int i = 1; i < x.length; i++) {
             contentsStream.content.append(" ").append(x[i]).append(" ").append(y[i]).append(" l");
         }
         contentsStream.content.append(" S");
+    }
+
+    void drawStrokeVaryingWidth(double[] x, double[] y, double[] widths) { //TODO doesn't look beautiful
+        if (x.length != y.length)
+            throw new IllegalArgumentException("x and y have to be of same length");
+        if (widths.length != x.length - 1)
+            throw new IllegalArgumentException("widths has to be one shorter than x and y");
+        if (x.length < 2)
+            throw new IllegalArgumentException("stroke has to have at least two points");
+
+        for (int i = 1; i < x.length; i++) {
+            setStrokeWidth(widths[i-1]);
+            drawLine(x[i-1], y[i-1], x[i], y[i]);
+        }
+    }
+
+    void setStrokeWidth(double width) {
+        contentsStream.content.append(width).append(" w\n");
     }
 
     @Override
