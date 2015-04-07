@@ -4,14 +4,14 @@ package de.yellowant.xojtoimage.renderer.pdf;
  * @author Anton Schirg
  */
 public class PdfInteger extends PdfObject {
-    private int value;
+    public Integer value;
 
-    public PdfInteger(int value) {
+    public PdfInteger(Integer value) {
         this.value = value;
     }
 
     @Override
     public String render() {
-        return Integer.toString(value);
+        return value.toString();
     }
 }

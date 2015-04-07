@@ -9,11 +9,12 @@ import java.util.List;
 public class PdfDocument {
     public List<PdfPage> pages = new LinkedList<>();
     public List<PdfIndirectObject> fonts = new LinkedList<>();
-
     final PdfIndirectObject rootObject;
+
     final PdfIndirectObject pagesObject;
     final PdfArray pagesArray;
-    int objectCounter = 0;
+    private int objectCounter = 0;
+    private final PdfInteger pageCount;
 
     public PdfDocument() {
         PdfDictionary catalogDict = new PdfDictionary();
@@ -22,10 +23,11 @@ public class PdfDocument {
 
         PdfDictionary pagesDict = new PdfDictionary();
         pagesDict.dict.put(new PdfName("Type"), new PdfName("Pages"));
-        pagesDict.dict.put(new PdfName("Count"), new PdfInteger(1));
         pagesArray = new PdfArray();
         pagesDict.dict.put(new PdfName("Kids"), pagesArray);
         pagesObject = constructIndirectObject(pagesDict);
+        pageCount = new PdfInteger(pagesArray.elements.size());
+        pagesDict.dict.put(new PdfName("Count"), pageCount);
         catalogDict.dict.put(new PdfName("Pages"), new PdfIndirectReference(pagesObject));
     }
 
@@ -70,6 +72,7 @@ public class PdfDocument {
         PdfPage page = new PdfPage(this);
         pages.add(page);
         pagesArray.elements.add(new PdfIndirectReference(page.page));
+        pageCount.value = pagesArray.elements.size();
         return page;
     }
 
