@@ -1,9 +1,9 @@
-package de.yellowant.janis.xojtoimage.renderer;
+package de.yellowant.xojtoimage.renderer;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
-import de.yellowant.janis.xojtoimage.xournalelements.Page;
+import de.yellowant.xojtoimage.xournalelements.Page;
 
 public interface Renderer {
 	public void export(String name, String format, int pageIndex)

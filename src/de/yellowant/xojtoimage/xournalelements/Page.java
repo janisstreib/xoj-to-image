@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage.xournalelements;
+package de.yellowant.xojtoimage.xournalelements;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import de.yellowant.janis.xojtoimage.XMLParseUtils;
+import de.yellowant.xojtoimage.XMLParseUtils;
 
 public class Page {
 	private double width, height;

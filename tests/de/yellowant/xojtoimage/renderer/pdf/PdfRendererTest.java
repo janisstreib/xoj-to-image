@@ -1,6 +1,8 @@
-package de.yellowant.janis.xojtoimage.renderer.pdf;
+package de.yellowant.xojtoimage.renderer.pdf;
 
 import org.junit.Test;
+
+import de.yellowant.xojtoimage.renderer.pdf.PdfRenderer;
 
 public class PdfRendererTest {
 
