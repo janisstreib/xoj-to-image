@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage;
+package de.yellowant.xojtoimage;
 
 import java.io.IOException;
 

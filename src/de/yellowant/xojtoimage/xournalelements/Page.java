@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage.xournalelements;
+package de.yellowant.xojtoimage.xournalelements;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import de.yellowant.janis.xojtoimage.XMLParseUtils;
+import de.yellowant.xojtoimage.XMLParseUtils;
 
 public class Page {
 	private double width, height;
@@ -65,13 +65,17 @@ public class Page {
 			g.setStroke(oldStroke);
 		} else if ("graph".equals(style)) {
 			java.awt.Stroke oldStroke = g.getStroke();
-			g.setStroke(new BasicStroke(1.1f));
+			g.setStroke(new BasicStroke(.55f*factor));
 			g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
 			int y = Math.round(14 * factor);
-			for (int i = 0; i < height / 20; i++) {
-				g.drawLine(0, y, height, y);
+			for (int i = 0; i < height / (14 * factor); i++) {
 				g.drawLine(y, 0, y, width);
 				y += Math.round(14 * factor);
+			}
+			int x = Math.round(14 * factor);
+			for (int i = 0; i < width / (14 * factor); i++) {
+				g.drawLine(0, x, height, x);
+				x += Math.round(14 * factor);
 			}
 			g.setStroke(oldStroke);
 		} else if ("ruled".equals(style)) {
@@ -85,7 +89,7 @@ public class Page {
 		g.setStroke(new BasicStroke(1.1f));
 		g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
 		int y = Math.round(80 * factor);
-		for (int i = 0; i < height / 10; i++) {
+		for (int i = 0; i < height / 20; i++) {
 			g.drawLine(0, y, height, y);
 			y += Math.round(24f * factor);
 		}

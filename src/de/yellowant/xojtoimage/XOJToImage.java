@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage;
+package de.yellowant.xojtoimage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +11,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import de.yellowant.janis.xojtoimage.renderer.Renderer;
-import de.yellowant.janis.xojtoimage.xournalelements.Xournal;
+import de.yellowant.xojtoimage.renderer.Renderer;
+import de.yellowant.xojtoimage.xournalelements.Xournal;
 
 public class XOJToImage {
 	private Xournal xournal;

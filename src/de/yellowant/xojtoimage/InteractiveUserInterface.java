@@ -1,8 +1,8 @@
-package de.yellowant.janis.xojtoimage;
+package de.yellowant.xojtoimage;
 
 import java.io.File;
 
-import de.yellowant.janis.xojtoimage.renderer.PageCanvas;
+import de.yellowant.xojtoimage.renderer.PageCanvas;
 
 public class InteractiveUserInterface {
 	private static final String USAGE = "Uasge:\njava -jar xojtoimage.jar <Xournal file> <format> <scale factor> <ouput file prefix>";

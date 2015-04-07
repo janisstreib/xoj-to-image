@@ -1,6 +1,6 @@
-package de.yellowant.janis.xojtoimage.xournalelements;
+package de.yellowant.xojtoimage.xournalelements;
 
-import static de.yellowant.janis.xojtoimage.XMLParseUtils.skip;
+import static de.yellowant.xojtoimage.XMLParseUtils.skip;
 
 import java.io.IOException;
 import java.util.LinkedList;

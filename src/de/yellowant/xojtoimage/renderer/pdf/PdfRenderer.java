@@ -1,4 +1,4 @@
-package de.yellowant.janis.xojtoimage.renderer.pdf;
+package de.yellowant.xojtoimage.renderer.pdf;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
