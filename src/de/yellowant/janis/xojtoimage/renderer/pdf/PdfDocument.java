@@ -7,25 +7,52 @@ import java.util.List;
  * @author Anton Schirg
  */
 public class PdfDocument {
-    public List<PdfIndirectObject> objects = new LinkedList<>();
-    public PdfIndirectObject rootObject;
+    public List<PdfPage> pages = new LinkedList<>();
+    public List<PdfIndirectObject> fonts = new LinkedList<>();
+
+    final PdfIndirectObject rootObject;
+    final PdfIndirectObject pagesObject;
+    final PdfArray pagesArray;
     int objectCounter = 0;
+
+    public PdfDocument() {
+        PdfDictionary catalogDict = new PdfDictionary();
+        catalogDict.dict.put(new PdfName("Type"), new PdfName("Catalog"));
+        rootObject = constructIndirectObject(catalogDict);
+
+        PdfDictionary pagesDict = new PdfDictionary();
+        pagesDict.dict.put(new PdfName("Type"), new PdfName("Pages"));
+        pagesDict.dict.put(new PdfName("Count"), new PdfInteger(1));
+        pagesArray = new PdfArray();
+        pagesDict.dict.put(new PdfName("Kids"), pagesArray);
+        pagesObject = constructIndirectObject(pagesDict);
+        catalogDict.dict.put(new PdfName("Pages"), new PdfIndirectReference(pagesObject));
+    }
 
     public String render() {
         StringBuilder sb = new StringBuilder();
         sb.append("%PDF-1.0\n\n");
 
-        for (PdfObject object : objects) {
-            sb.append(object.render());
-            sb.append("\n\n");
+        sb.append(rootObject.render()).append("\n\n");
+
+        sb.append(pagesObject.render()).append("\n\n");
+
+        for (PdfIndirectObject font : fonts) {
+            sb.append(font.render()).append("\n");
         }
+        sb.append("\n");
+
+        for (PdfPage page : pages) {
+            sb.append(page.render()).append("\n");
+        }
+        sb.append("\n");
 
         sb.append("xref\n");
-        sb.append("0 ").append(objects.size() + 1).append("\n\n"); //Num object incl xref
+        sb.append("0 ").append(objectCounter + 1).append("\n\n"); //Num object incl xref
 
         sb.append("trailer\n");
         PdfDictionary trailerDict = new PdfDictionary();
-        trailerDict.dict.put(new PdfName("Size"), new PdfInteger(objects.size() + 1));
+        trailerDict.dict.put(new PdfName("Size"), new PdfInteger(objectCounter + 1));
         trailerDict.dict.put(new PdfName("Root"), new PdfIndirectReference(rootObject));
         sb.append(trailerDict.render()).append("\n");
         sb.append("startxref\n\n");
@@ -34,10 +61,25 @@ public class PdfDocument {
         return sb.toString();
     }
 
-    public PdfIndirectObject addAsIndirectObject(PdfObject object) {
+    public PdfIndirectObject constructIndirectObject(PdfObject object) {
         objectCounter++;
-        PdfIndirectObject indirectObject = new PdfIndirectObject(object, objectCounter, 0);
-        objects.add(indirectObject);
+        return new PdfIndirectObject(object, objectCounter, 0);
+    }
+
+    public PdfPage addPage() {
+        PdfPage page = new PdfPage(this);
+        pages.add(page);
+        pagesArray.elements.add(new PdfIndirectReference(page.page));
+        return page;
+    }
+
+    public PdfIndirectObject addFont(String baseFont) {
+        PdfDictionary fontDefDict = new PdfDictionary();
+        fontDefDict.dict.put(new PdfName("Type"), new PdfName("Font"));
+        fontDefDict.dict.put(new PdfName("Subtype"), new PdfName("Type1"));
+        fontDefDict.dict.put(new PdfName("BaseFont"), new PdfName(baseFont));
+        PdfIndirectObject indirectObject = constructIndirectObject(fontDefDict);
+        fonts.add(indirectObject);
         return indirectObject;
     }
 }

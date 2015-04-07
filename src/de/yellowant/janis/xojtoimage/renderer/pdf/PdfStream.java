@@ -4,10 +4,10 @@ package de.yellowant.janis.xojtoimage.renderer.pdf;
  * @author Anton Schirg
  */
 public class PdfStream extends PdfObject {
-    String content;
+    StringBuffer content;
 
-    public PdfStream(String content) {
-        this.content = content;
+    public PdfStream() {
+        this.content = new StringBuffer();
     }
 
     @Override

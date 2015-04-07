@@ -3,7 +3,7 @@ package de.yellowant.janis.xojtoimage.renderer.pdf;
 /**
  * @author Anton Schirg
  */
-public class PdfIndirectObject extends PdfObject {
+public class PdfIndirectObject extends PdfObject { //TODO Make generic for contained object type
     public PdfObject object;
     public int number;
     public int generation;
