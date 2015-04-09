@@ -13,6 +13,10 @@ public enum Tool {
 		return Math.round((255 / 100f) * (opacity * 100f));
 	}
 
+	public float getOpacity() {
+		return opacity;
+	}
+
 	public static Tool getToolByName(String name) {
 		switch (name.trim().toLowerCase()) {
 		case "pen":

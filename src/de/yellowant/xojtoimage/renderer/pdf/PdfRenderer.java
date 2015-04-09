@@ -28,6 +28,8 @@ public class PdfRenderer implements Renderer{
             PdfPage pdfPage = doc.addPage(pageWidth, pageHeight);
             for (Layer layer : xojPage.getLayers()) {
                 for (Stroke stroke : layer.getStrokes()) {
+                    pdfPage.setStrokeColor(stroke.getColor().getAwtColor());
+                    pdfPage.setAlpha(stroke.getTool().getOpacity());
                     double[] xCoords = getEven(stroke.getCoords());
                     double[] yCoords = reverseCoordinates(getOdd(stroke.getCoords()), pageHeight);
                     if (stroke.getWidths().length == 1) {

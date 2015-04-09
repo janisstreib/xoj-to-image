@@ -19,6 +19,10 @@ public enum Color {
 				awtColor.getBlue(), tool.getAlpha());
 	}
 
+	public java.awt.Color getAwtColor() {
+		return awtColor;
+	}
+
 	public static Color getColorByName(String name) {
 		switch (name.trim().toLowerCase()) {
 		case "black":

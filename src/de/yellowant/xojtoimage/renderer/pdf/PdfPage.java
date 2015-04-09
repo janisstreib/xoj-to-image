@@ -1,12 +1,16 @@
 package de.yellowant.xojtoimage.renderer.pdf;
 
+import java.awt.*;
+
 /**
  * @author Anton Schirg
  */
 public class PdfPage extends PdfObject{
-    PdfIndirectObject page;
-    PdfIndirectObject contents;
+    final PdfIndirectObject page;
+    final PdfIndirectObject contents;
     private final PdfStream contentsStream;
+    final PdfIndirectObject resources;
+    private final PdfExtGState extGState;
 
     public PdfPage(PdfDocument document, double width, double height) {
         PdfDictionary pageDict = new PdfDictionary();
@@ -28,6 +32,12 @@ public class PdfPage extends PdfObject{
         contentsStream = new PdfStream();
         contents = document.constructIndirectObject(contentsStream);
 
+        PdfDictionary pageResources = new PdfDictionary();
+        extGState = new PdfExtGState();
+        pageResources.dict.put(new PdfName("ExtGState"), extGState);
+        resources = document.constructIndirectObject(pageResources);
+
+        pageDict.dict.put(new PdfName("Resources"), new PdfIndirectReference(resources));
         pageDict.dict.put(new PdfName("Contents"), new PdfIndirectReference(contents));
     }
 
@@ -64,10 +74,22 @@ public class PdfPage extends PdfObject{
         contentsStream.content.append(width).append(" w\n");
     }
 
+    void setStrokeColor(Color color){
+        contentsStream.content.append(color.getRed() / 255.0).append(" ")
+                .append(color.getGreen() / 255.0).append(" ")
+                .append(color.getBlue() / 255.0).append(" RG\n");
+
+    }
+
+    void setAlpha(double alpha) {
+        PdfName alphaName = extGState.getAlpha(alpha);
+        contentsStream.content.append(alphaName.render()).append(" gs\n");
+    }
+
     @Override
     public String render() {
         StringBuilder sb = new StringBuilder();
-        sb.append(page.render()).append("\n").append(contents.render());
+        sb.append(page.render()).append("\n").append(resources.render()).append("\n").append(contents.render());
         return sb.toString();
     }
 }
