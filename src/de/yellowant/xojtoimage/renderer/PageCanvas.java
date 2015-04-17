@@ -149,7 +149,7 @@ public class PageCanvas implements Renderer {
 	@Override
 	public void exportAll(String name, String format) throws IOException {
 		for (int i = 0; i < pages.size(); i++) {
-			export(name + "_" + i, format, i);
+			export(name + "_" + i + 1, format, i);
 		}
 	}
 }
