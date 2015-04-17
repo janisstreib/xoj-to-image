@@ -44,10 +44,7 @@ public class XOJToImage {
 	}
 
 	public void exportAll(String filename, String format) throws IOException {
-		int i = 0;
-		while (i < xournal.getPages().size()) {
-			renderer.export(filename + "_" + (i + 1), format, i++);
-		}
+		renderer.exportAll(filename, format);
 	}
 
 }
