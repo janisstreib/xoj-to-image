@@ -12,7 +12,7 @@ public class PDFInterface {
 	public static void main(String[] args) {
 		try {
 			XOJToImage xoj = new XOJToImage(new File(args[0]), new PdfRenderer());
-			xoj.export(args[1], "", 0);
+			xoj.exportAll(args[1], "");
 			System.out.println("Done. Processed "
                     + xoj.getXournal().getPages().size() + " pages.");
 		} catch (IOException e) {

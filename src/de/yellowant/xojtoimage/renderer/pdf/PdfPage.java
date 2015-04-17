@@ -39,6 +39,8 @@ public class PdfPage extends PdfObject{
 
         pageDict.dict.put(new PdfName("Resources"), new PdfIndirectReference(resources));
         pageDict.dict.put(new PdfName("Contents"), new PdfIndirectReference(contents));
+
+        setLineCap(1);
     }
 
     void drawLine(double x1, double y1, double x2, double y2) {
@@ -84,6 +86,10 @@ public class PdfPage extends PdfObject{
     void setAlpha(double alpha) {
         PdfName alphaName = extGState.getAlpha(alpha);
         contentsStream.content.append(alphaName.render()).append(" gs\n");
+    }
+
+    void setLineCap(int capStyle) {
+        contentsStream.content.append(capStyle).append(" J\n");
     }
 
     @Override
