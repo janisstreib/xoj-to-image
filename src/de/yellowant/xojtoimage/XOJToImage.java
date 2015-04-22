@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -48,9 +48,9 @@ public class XOJToImage {
 		renderer.exportAll(filename, format);
 	}
 
-	public InputStream exportAsStream(String format, int page)
+	public void exportAsStream(String format, int page, OutputStream out)
 			throws IOException {
-		return renderer.exportAsStream(format, page);
+		renderer.exportAsStream(format, page, out);
 	}
 
 	public int getPageCount() {

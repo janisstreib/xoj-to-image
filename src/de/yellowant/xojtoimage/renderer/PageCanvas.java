@@ -10,9 +10,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -157,7 +155,7 @@ public class PageCanvas implements Renderer {
 	}
 
 	@Override
-	public InputStream exportAsStream(String format, int pageIndex)
+	public void exportAsStream(String format, int pageIndex, OutputStream out)
 			throws IOException {
 		Page p = pages.get(pageIndex);
 		int width = (int) Math.round(p.getWidth() * factor);
@@ -167,10 +165,7 @@ public class PageCanvas implements Renderer {
 		Graphics2D d = buf.createGraphics();
 		p.paintBackround(d, Tool.PEN, width, height, factor);
 		paintXOJ(d, p, texts.get(pageIndex), lines.get(pageIndex));
-		PipedOutputStream pout = new PipedOutputStream();
-		PipedInputStream pip = new PipedInputStream(pout);
-		ImageIO.write(buf, format, pout);
+		ImageIO.write(buf, format, out);
 		d.dispose();
-		return pip;
 	}
 }

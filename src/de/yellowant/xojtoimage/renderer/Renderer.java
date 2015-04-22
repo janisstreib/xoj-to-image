@@ -1,7 +1,7 @@
 package de.yellowant.xojtoimage.renderer;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 
 import de.yellowant.xojtoimage.xournalelements.Page;
@@ -12,7 +12,7 @@ public interface Renderer {
 
 	public void exportAll(String name, String format) throws IOException;
 
-	public InputStream exportAsStream(String format, int pageIndex)
+	public void exportAsStream(String format, int pageIndex, OutputStream out)
 			throws IOException;
 
 	public void setPages(LinkedList<Page> pages);

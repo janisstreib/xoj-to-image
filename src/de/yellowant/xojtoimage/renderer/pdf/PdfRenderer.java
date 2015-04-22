@@ -3,7 +3,7 @@ package de.yellowant.xojtoimage.renderer.pdf;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 
@@ -96,7 +96,7 @@ public class PdfRenderer implements Renderer {
 	}
 
 	@Override
-	public InputStream exportAsStream(String format, int pageIndex)
+	public void exportAsStream(String format, int pageIndex, OutputStream out)
 			throws IOException {
 		throw new IllegalArgumentException("Not implemented yet!");
 	}
