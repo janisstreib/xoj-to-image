@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="all" name="SensNetNode">
+	<path id="xoj-to-image.classpath">
+		<pathelement location="bin" />
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="init">
+		<mkdir dir="bin" />
+		<copy includeemptydirs="false" todir="bin">
+			<fileset dir="src/">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target depends="init" name="build">
+		<javac debug="true" destdir="bin" includeantruntime="false"
+			source="1.7" target="1.7">
+			<src path="src" />
+			<classpath refid="xoj-to-image.classpath" />
+		</javac>
+	</target>
+	<target depends="build" name="pack">
+		<jar destfile="xoj-to-image.jar" basedir="bin" manifest="xoj-to-image.MF" />
+	</target>
+	
+	<target name="all" depends="pack" />
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir=".">
+				<include name="bin/**/*" />
+				<include name="xoj-to-image.jar" />
+			</fileset>
+		</delete>
+	</target>
+</project>
