@@ -14,7 +14,7 @@ public class PdfDocument {
     final PdfIndirectObject pagesObject;
     final PdfArray pagesArray;
     private int objectCounter = 0;
-    private final PdfInteger pageCount;
+    private final PdfLong pageCount;
 
     public PdfDocument() {
         PdfDictionary catalogDict = new PdfDictionary();
@@ -26,7 +26,7 @@ public class PdfDocument {
         pagesArray = new PdfArray();
         pagesDict.dict.put(new PdfName("Kids"), pagesArray);
         pagesObject = constructIndirectObject(pagesDict);
-        pageCount = new PdfInteger(pagesArray.elements.size());
+        pageCount = new PdfLong(pagesArray.elements.size());
         pagesDict.dict.put(new PdfName("Count"), pageCount);
         catalogDict.dict.put(new PdfName("Pages"), new PdfIndirectReference(pagesObject));
     }
@@ -54,7 +54,7 @@ public class PdfDocument {
 
         sb.append("trailer\n");
         PdfDictionary trailerDict = new PdfDictionary();
-        trailerDict.dict.put(new PdfName("Size"), new PdfInteger(objectCounter + 1));
+        trailerDict.dict.put(new PdfName("Size"), new PdfLong(objectCounter + 1));
         trailerDict.dict.put(new PdfName("Root"), new PdfIndirectReference(rootObject));
         sb.append(trailerDict.render()).append("\n");
         sb.append("startxref\n\n");

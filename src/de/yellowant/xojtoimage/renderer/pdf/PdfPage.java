@@ -22,8 +22,8 @@ public class PdfPage extends PdfObject{
 //        resDict.dict.put(new PdfName("Font"), fontDict);
 //        pageDict.dict.put(new PdfName("Resources"), resDict);
         PdfArray mediaBoxArray = new PdfArray();
-        mediaBoxArray.elements.add(new PdfInteger(0));
-        mediaBoxArray.elements.add(new PdfInteger(0));
+        mediaBoxArray.elements.add(new PdfLong(0));
+        mediaBoxArray.elements.add(new PdfLong(0));
         mediaBoxArray.elements.add(new PdfReal(width));
         mediaBoxArray.elements.add(new PdfReal(height));
         pageDict.dict.put(new PdfName("MediaBox"), mediaBoxArray);

@@ -13,7 +13,7 @@ public class PdfStream extends PdfObject {
     @Override
     public String render() {
         PdfDictionary streamDict = new PdfDictionary();
-        streamDict.dict.put(new PdfName("Length"), new PdfInteger(content.length()));
+        streamDict.dict.put(new PdfName("Length"), new PdfLong(content.length()));
         StringBuilder sb = new StringBuilder();
         sb.append(streamDict.render()).append("\n");
         sb.append("stream\n");
