@@ -53,4 +53,8 @@ public class XOJToImage {
 		return renderer.exportAsStream(format, page);
 	}
 
+	public int getPageCount() {
+		return xournal.getPages().size();
+	}
+
 }
