@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 
@@ -45,6 +46,11 @@ public class XOJToImage {
 
 	public void exportAll(String filename, String format) throws IOException {
 		renderer.exportAll(filename, format);
+	}
+
+	public InputStream exportAsStream(String format, int page)
+			throws IOException {
+		return renderer.exportAsStream(format, page);
 	}
 
 }
