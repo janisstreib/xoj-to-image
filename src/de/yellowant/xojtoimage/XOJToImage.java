@@ -1,9 +1,8 @@
 package de.yellowant.xojtoimage;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
@@ -19,11 +18,10 @@ public class XOJToImage {
 	private Xournal xournal;
 	private Renderer renderer;
 
-	public XOJToImage(File input, Renderer renderer)
+	public XOJToImage(InputStream input, Renderer renderer)
 			throws FileNotFoundException, IOException, XmlPullParserException {
 		this.renderer = renderer;
-		GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(
-				input));
+		GZIPInputStream inputStream = new GZIPInputStream(input);
 		XmlPullParser parser = XmlPullParserFactory.newInstance()
 				.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);

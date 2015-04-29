@@ -1,6 +1,6 @@
 package de.yellowant.xojtoimage;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.util.regex.Pattern;
 
 import de.yellowant.xojtoimage.renderer.PageCanvas;
@@ -26,7 +26,7 @@ public class InteractiveUserInterface {
 			if (r == null) {
 				System.err.println("No known output format supplied!");
 			}
-			XOJToImage xoj = new XOJToImage(new File(args[0]), r);
+			XOJToImage xoj = new XOJToImage(new FileInputStream(args[0]), r);
 			String[] fileParts = args[1].split(Pattern.quote("."));
 			xoj.exportAll(fileParts[fileParts.length - 2],
 					fileParts[fileParts.length - 1]);
