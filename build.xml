@@ -23,9 +23,17 @@
 		</javac>
 	</target>
 	<target depends="build" name="pack">
-		<jar destfile="xoj-to-image.jar" basedir="bin" manifest="xoj-to-image.MF" />
+		<jar destfile="xoj-to-image.jar" basedir="bin" manifest="xoj-to-image.MF">
+			<archives>
+				<zips>
+					<fileset dir="lib">
+						<include name="**/*.jar" />
+					</fileset>
+				</zips>
+			</archives>
+		</jar>
 	</target>
-	
+
 	<target name="all" depends="pack" />
 	<target name="clean">
 		<delete includeemptydirs="true">
