@@ -1,6 +1,6 @@
 package de.yellowant.xojtoimage.renderer.pdf;
 
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +17,6 @@ import de.yellowant.xojtoimage.xournalelements.Stroke;
  */
 public class PdfRenderer implements Renderer {
 	PdfDocument doc;
-	String rendered;
 	private LinkedList<Page> xojPages;
 
 	@Override
@@ -53,13 +52,6 @@ public class PdfRenderer implements Renderer {
 		return result;
 	}
 
-	public void writeToFile(String filename) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(filename)));
-		writer.write(rendered);
-		writer.close();
-	}
-
 	@Override
 	public void setPages(LinkedList<Page> pages) {
 		this.xojPages = pages;
@@ -67,6 +59,14 @@ public class PdfRenderer implements Renderer {
 
 	@Override
 	public void exportAll(String name, String format) throws IOException {
+		OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(
+				new File(name + ".pdf")));
+		render(out);
+		out.flush();
+		out.close();
+	}
+
+	private void render(OutputStreamWriter out) throws IOException {
 		doc = new PdfDocument();
 		for (Page xojPage : xojPages) {
 			double pageWidth = xojPage.getHeight(); // Switched (switch back
@@ -91,13 +91,14 @@ public class PdfRenderer implements Renderer {
 			}
 		}
 
-		rendered = doc.render();
-		writeToFile(name);
+		doc.render(out);
 	}
 
 	@Override
 	public void exportAsStream(String format, int pageIndex, OutputStream out)
 			throws IOException {
-		throw new IllegalArgumentException("Not implemented yet!");
+		OutputStreamWriter out2 = new OutputStreamWriter(out);
+		render(out2);
+		out2.flush();
 	}
 }

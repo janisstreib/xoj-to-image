@@ -1,5 +1,8 @@
 package de.yellowant.xojtoimage.renderer.pdf;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 /**
  * @author Anton Schirg
  */
@@ -11,7 +14,7 @@ public class PdfLong extends PdfObject {
 	}
 
 	@Override
-	public String render() {
-		return value + "";
+	public void render(OutputStreamWriter out) throws IOException {
+		out.write(value + "");
 	}
 }

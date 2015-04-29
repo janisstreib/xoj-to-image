@@ -1,24 +1,28 @@
 package de.yellowant.xojtoimage.renderer.pdf;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 /**
  * @author Anton Schirg
  */
 public class PdfStream extends PdfObject {
-    StringBuffer content;
+	StringBuffer content;
 
-    public PdfStream() {
-        this.content = new StringBuffer();
-    }
+	public PdfStream() {
+		this.content = new StringBuffer();
+	}
 
-    @Override
-    public String render() {
-        PdfDictionary streamDict = new PdfDictionary();
-        streamDict.dict.put(new PdfName("Length"), new PdfLong(content.length()));
-        StringBuilder sb = new StringBuilder();
-        sb.append(streamDict.render()).append("\n");
-        sb.append("stream\n");
-        sb.append(content).append("\n");
-        sb.append("endstream");
-        return sb.toString();
-    }
+	@Override
+	public void render(OutputStreamWriter out) throws IOException {
+		PdfDictionary streamDict = new PdfDictionary();
+		streamDict.dict.put(new PdfName("Length"),
+				new PdfLong(content.length()));
+		streamDict.render(out);
+		out.write("\n");
+		out.write("stream\n");
+		out.write(content.toString());
+		out.write("\n");
+		out.write("endstream");
+	}
 }
