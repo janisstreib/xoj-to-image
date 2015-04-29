@@ -29,8 +29,12 @@ public class Page {
 			if (name.equals("layer")) {
 				layers.add(new Layer(parser));
 			} else if (name.equals("background")) {
-				backroundColor = Color.getColorByName(parser.getAttributeValue(
-						null, "color"));
+				String attributeValue = parser.getAttributeValue(null, "color");
+				if (attributeValue != null) {
+					backroundColor = Color.getColorByName(attributeValue);
+				} else {
+					backroundColor = Color.WHITE;
+				}
 				style = parser.getAttributeValue(null, "style");
 				XMLParseUtils.skip(parser);
 			} else {
@@ -65,7 +69,7 @@ public class Page {
 			g.setStroke(oldStroke);
 		} else if ("graph".equals(style)) {
 			java.awt.Stroke oldStroke = g.getStroke();
-			g.setStroke(new BasicStroke(.55f*factor));
+			g.setStroke(new BasicStroke(.55f * factor));
 			g.setColor(Color.BLUE.getAwtColor(Tool.PAGELINER));
 			int y = Math.round(14 * factor);
 			for (int i = 0; i < height / (14 * factor); i++) {
